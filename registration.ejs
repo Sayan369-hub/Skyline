@@ -1,0 +1,367 @@
+<center>
+  <h3><u>Student Details</u></h3>
+</center>
+
+<div id="section1" class="collapsible-section">
+  <details>
+    <summary>Personal Details</summary>
+    <div class="content">
+      <div id="stdSaveMsg">
+        <!-- Data will be displayed here -->
+      </div>
+      <div class="skycontainer">
+        
+        <div class="section">
+
+          <label id="nam" for="stdid">Student ID:</label><input id="stdid" type="text" name="stdid" required
+            disabled><br>
+          <label id="nam" for="stdname">Student Name:</label><input id="stdname" type="text" name="stdname"
+            required><br>
+          <label id="f">Father Name:</label><input id="fname" type="text" name="fathername" required><br>
+          <label id="m">Mother Name:</label><input id="mname" type="text" name="mothername" required><br>
+          <label id="e">Email Id:</label><input id="email" type="text" name="email" required><br>
+          <label id="p">Phone Number:</label> <input id="phone" type="text" name="phoneno" required><br>
+          <label for="dob">Date Of Birth:</label><input type="date" id="dob" name="dob" required>
+        </div>
+        <div class="section">
+          <label for="E">Gender:</label>  
+          <select id="gender" name="gender" required>
+            <option value="edu"></option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Others</option>
+          </select><br>
+          <label id="h">Present Address:</label>
+          <input id="address" type="text" name="address" required><br>
+          <label id="c">Institution Name:</label>
+          <input id="school" type="text" name="school"><br>
+          <label for="S">Class:</label>
+          <input type="hidden" id="type" name="type" value="CS"></input>
+          <select id="class" name="class">
+            <option value="ed"></option>
+            <option>I</option>
+            <option>II</option>
+            <option>III</option>
+            <option>IV</option>
+            <option>V</option>
+            <option>VI</option>
+            <option>VII</option>
+            <option>VIII</option>
+            <option>IX</option>
+            <option>X</option>
+            <option>XI</option>
+            <option>XII</option>
+            <option>Graduation</option>
+            <option>Others</option>
+          </select>
+          <br>
+          <label id="L">Last Qualification:</label>
+          <input id="qua" type="text" name="qualification" required><br>
+          <label for="branch">Branch:</label>
+          <select name="branch" id="branch">
+            <% branches.forEach(branch=> { %>
+              <option value="<%= branch.branchid %>">
+                <%= branch.branchName %>
+              </option>
+              <% }); %>
+          </select>
+          <label for="S">Status:</label>
+          <select id="status" name="status">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+          <br>
+        </div>
+        <!--<center>
+          <button id="stddet" name="stddet">Save</button>
+          <input type="reset" name="reset" value="Reset">
+        </center>-->
+        <script>
+          // When the "Fetch Data" button is clicked, send the parameters via AJAX
+          $('#stddet').click(function () {
+            document.getElementById('stddet').disabled = true;
+            var stdname = $('#stdname').val();// Get the user ID value
+            //alert(stdname);
+            var fname = $('#fname').val();
+            var mname = $('#mname').val();
+            var email = $('#email').val();
+            var phone = $('#phone').val();
+            var dob = $('#dob').val();
+            var gender = $('#gender').val();
+            var address = $('#address').val();
+            var school = $('#school').val();
+            var clas = $('#class').val();
+            var qua = $('#qua').val();
+            var branch = $('#branch').val();
+            var status = $('#status').val();
+            // Get the password value
+
+            // Send a GET request with parameters using AJAX
+            $.ajax({
+              url: '/saveStudent',  // Server route to post data
+              method: 'POST',
+              data: { stdname: stdname, fname: fname,mname:mname,email:email,phone:phone,dob:dob,gender:gender,address:address,school:school,clas:clas,qua:qua,branch:branch,status:status
+               },  // Parameters to be sent
+              success: function (data) {
+                // Clear the previous content
+                $('#stdSaveMsg').empty();
+
+                // Display the retrieved data
+                if (data.success) {
+                  //data.forEach(user => {
+                  //alert(data.studentid);
+                  document.getElementById('stdid').value=data.studentid;
+                  
+                  $('#stdSaveMsg').html("<p><strong>"+data.message+"</strong></p>");
+                  document.getElementById('stdidc').value=data.studentid;
+                  document.getElementById('stdidch').value=data.studentid;
+                  document.getElementById('stdnamech').value =stdname;
+                  document.getElementById('stdnamec').value =stdname;
+                  // });
+                  //alert("Authentication Failed");
+                  //$('#validationMsg').html('<p>' + 'Invalid User Name or Password' + '</p>');
+                }
+                else {
+                  //alert("Authentication Success");
+                  //alert(data.studentid);
+                  $('#stdSaveMsg').html("<p><strong>"+data.message+"</strong></p>");
+                }
+              },
+              error: function (err) {
+                console.error('Error fetching data:', err);
+                $('#stdSaveMsg').html('<p>Error occurred while fetching data.</p>');
+              }
+            });
+          });
+        </script>
+      </div>
+    </div>
+    <center><button id="stddet" name="stddet">Save</button></center>
+  </details>
+</div>
+<div id="section2" class="collapsible-section">
+  <details>
+    <summary>Course</summary>
+    <div class="content">
+      <div id="courseSaveMsg">
+        <!-- Data will be displayed here -->
+      </div>
+      <div class="skycontainer">
+        <div class="section">
+          <label for="studentid">Student ID:</label>
+          <input type="text" name="stdidc" id="stdidc" disabled>
+          <input type="hidden" name="stdidch" id="stdidch">
+          <label for="studentname">Student Name:</label>
+          <input type="hidden" name="stdnamech" id="stdnamech">
+          <input type="text" name="stdnamec" id="stdnamec" disabled>
+          <label for="courseSelect">Select a Course:</label>
+          <select id="courseSelect" name="courseidname">
+            <% courses.forEach(course=> { %>
+              <option value="<%= course.courseid %>">
+                <%= course.coursename %>
+              </option>              
+              <% }); %>
+          </select>
+          
+          <label for="coursefee">Course Fee:</label>
+          <input type="text" name="coursefee" id="coursefee">
+          <label for="admissionfee">Admission Fee:</label>
+          <input type="text" name="admissionfee" id="admissionfee">
+          <label for="admissiondate">Admission Date:</label>
+          <input type="date" name="admissiondate" id="admissiondate">
+          <label for="cstatus">Status:</label>
+          <select id="cstatus" name="cstatus">
+            <option>Active</option>
+            <option>Inactive</option>
+          </select>
+        </div>
+        <script>
+         
+          // When the "Fetch Data" button is clicked, send the parameters via AJAX
+          $('#coursedet').click(function () {
+            document.getElementById('coursedet').disabled = true;
+            var stdidch = $('#stdidch').val(); // Get the user ID value
+            var stdnamech = $('#stdnamech').val();
+            var courseSelect = $('#courseSelect').val();
+            var coursefee = $('#coursefee').val();
+            var admissionfee = $('#admissionfee').val();
+            var admissiondate = $('#admissiondate').val();
+            var cstatus = $('#cstatus').val();
+           // Send a POST request with parameters using AJAX
+            $.ajax({
+              url: '/saveCourse',  // Server route to get data
+              method: 'POST',
+              data: { stdidch: stdidch, stdnamech: stdnamech,courseSelect:courseSelect, coursefee:coursefee,admissionfee:admissionfee,admissiondate:admissiondate,cstatus:cstatus},  // Parameters to be sent
+              success: function (data) {
+                // Clear the previous content
+                $('#courseSaveMsg').empty();
+
+                // Display the retrieved data
+                if (data.success) {
+                  //data.forEach(user => {
+                  $('#courseSaveMsg').html(`
+                      <p><strong>Course Assigned to Student</strong></p>
+                  `);
+                  // });
+                  //alert("Authentication Failed");
+                  //$('#validationMsg').html('<p>' + 'Invalid User Name or Password' + '</p>');
+                }
+                else {
+                  //alert("Authentication Success");
+                  $('#courseSaveMsg').html(`
+                      <p><strong>Failed to Assign the Course</strong></p>
+                  `);
+                }
+              },
+              error: function (err) {
+                console.error('Error fetching data:', err);
+                $('#courseSaveMsg').html('<p>Error occurred while saving data.</p>');
+              }
+            });
+          });
+        </script>
+      </div>
+    </div>
+    <center><button id="coursedet" name="coursedet">Save</button></center>
+  </details>
+</div>
+
+<div id="section3" class="collapsible-section">
+  <details>
+    <summary>Class Assignment</summary>
+    <div class="content">
+      <div id="fieldContainer">
+        <div>
+          <div class="skycontainer">
+            <div class="section">
+              <label for="day">Day:</label>
+              <!--<input type="text" name="day[]" required>-->
+              <select id="day" name="day[]">
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+                <option value="Saturday">Saturday</option>
+              </select>
+            </div>
+            <div class="section">
+              <label for="time">Time:</label>
+              <!--<input type="text" name="time[]" required>-->
+              <select id="time" name="time[]">
+                <option value="7:30 am">7:30 am</option>
+                <option value="10:00 am">10:00 am</option>
+                <option value="11:30 am">11:30 am</option>
+                <option value="3:00 pm">3:00 pm</option>
+                <option value="4:30 pm">4:30 pm</option>
+                <option value="6:00 pm">6:00 pm</option>
+                <option value="7:30 pm">7:30 pm</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" onclick="removeField(this)">Remove</button>
+          <script>
+            function addField() {
+              var container = document.getElementById("fieldContainer");
+              var newField = document.createElement("div");
+
+              newField.innerHTML = `
+                  <div  class ="skycontainer"><div class="section"><label for="day">Day:</label>
+                  <!--<input type="text" name="day[]" required>-->
+            <select id="day" name="day[]">
+            <option value="Sunday">Sunday</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          </select></div>
+           <div class="section">
+                  <label for="time">Time:</label>
+                  <!--<input type="text" name="time[]" required>-->
+            <select id="time" name="time[]">
+            <option value="7:30 am">7:30 am</option>
+          <option value="10:00 am">10:00 am</option>
+          <option value="11:30 am">11:30 am</option>
+          <option value="3:00 pm">3:00 pm</option>
+          <option value="4:30 pm">4:30 pm</option>
+          <option value="6:00 pm">6:00 pm</option>
+          <option value="7:30 pm">7:30 pm</option>
+          </select></div> </div>
+                  <button type="button" onclick="removeField(this)">Remove</button>
+                `;
+
+              container.appendChild(newField);
+            }
+
+            function removeField(button) {
+              var container = document.getElementById("fieldContainer");
+              container.removeChild(button.parentNode);
+            }
+            $('#schid').click(function () {
+              const slots = [];
+              $('.section').each(function() {
+                    const day = $(this).find('#day').val();
+                    const time = $(this).find('#time').val();
+                    const stdid = $('#stdidch').val();
+                    const stdname = $('#stdnamech').val();
+                    const courseid = $('#courseSelect').val();
+                    slots.push({ day, time,stdid,stdname,courseid });
+                });
+                $.ajax({
+                    url: '/saveSlots',  // Ensure this matches your server endpoint
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ slots }),
+                    success: function(response) {
+                        alert('Slots saved successfully!');
+                    },
+                    error: function(error) {
+                        alert('Error saving slots!');
+                    }
+                });
+              });
+
+          </script>
+        </div>
+      </div>
+      <button type="button" onclick="addField()">Add New Slot</button>
+      <button id="schid" name="schid">Save</button>
+  </details>
+</div>
+
+<div id="section4" class="collapsible-section">
+  <details>
+    <summary>Payment</summary>
+    <div class="content">
+      <p>This is the content of Section 4.</p>
+    </div>
+  </details>
+</div>
+
+<div id="section5" class="collapsible-section">
+  <details>
+    <summary>Teacher Assignment</summary>
+    <div class="content">
+      <p>This is the content of Section 5.</p>
+    </div>
+  </details>
+</div>
+<script>
+  // Get all the sections (details tags)
+  const sections = document.querySelectorAll('details');
+
+  // Add event listener to each section
+  sections.forEach(section => {
+    section.addEventListener('toggle', function () {
+      // Close all other sections
+      sections.forEach(otherSection => {
+        if (otherSection !== section) {
+          otherSection.removeAttribute('open');
+        }
+      });
+    });
+  });
+</script>

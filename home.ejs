@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKYLINE Education</title>
+
+  <!-- font Awesome CDN link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- JQuery CDN link -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+
+<body bgcolor="#E5E8E8">
+ 
+  <%-include('header')%>
+
+  <div class="main-container">
+    <!-- Left Menu (Navigation) -->
+    <div class="left-menu">
+      <ul>
+        <li>
+          <a href="#">Student</a>
+          <ul class="submenu">
+            <li><a href="#" id="reg" data-menu="registration">Registration</a></li>
+            <li><a href="#" data-menu="ViewUpdate">Update/View</a></li>
+            <li><a href="#" data-menu="Attendance">Attendance</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Teacher</a>
+          <ul class="submenu">
+            <li><a href="#">New</a></li>
+            <li><a href="#">Update/View</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Course</a>
+          <ul class="submenu">
+            <li><a href="#">New</a></li>
+            <li><a href="#">Update/View</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Payment</a>
+          <ul class="submenu">
+            <li><a href="#">Payment</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Report</a>
+          <ul class="submenu">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Dues</a></li>
+            <li><a href="#">Collection</a></li>
+            <li><a href="#">TWSA</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Right Content Area -->
+    <div id="rightContainer" class="right-content">
+      
+    </div>
+  </div>
+
+
+<%- include('footer')%>
+<script>
+  $(document).ready(function() {
+    // Handle menu item clicks
+    $('#reg').click(function(event) {
+      event.preventDefault();
+      
+      // Get the menu item to load
+      const menu = $(this).data('menu');
+      
+      // Make an AJAX request to load the content for that menu item
+      $.get(`/load-content/${menu}`, function(data) {
+        // Dynamically insert the content into the content container
+        $('#rightContainer').html(data);
+      }).fail(function() {
+        $('#rightContainer').html('<p>Error loading content.</p>');
+      });
+    });
+  });
+</script>
+</body>
+
+</html>

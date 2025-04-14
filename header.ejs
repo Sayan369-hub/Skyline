@@ -1,0 +1,39 @@
+<header>
+<nav>
+    <img src="/css/img/skyline.png" class="logo" alt="">
+
+    <div class="navigation">
+        <ul>
+            <i id="menu-close" class="fas fa-times"></i>
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <!--li><a href="blog.html">Blog</a></li-->
+            <li><a href="/courses">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/userquery">Queries</a></li>
+        </ul>
+
+        <img src="/css/img/menu.png" id="menu-btn" alt="">
+    </div>
+</nav>
+<!-- Navigation ends -->
+
+<!-- Hero section starts -->
+<section id="home">
+    <h2>
+      Welcome to Skyline Education
+    </h2>
+    <p>
+      We are team of talented Teachers & Technical Instructors, who helps you to learn and build your skill on Computer Technologies
+    </p>
+    <div class="btn">
+        <!--<a href="#" class="blue">Learn More</a>-->
+        
+        <% if (session.status=='A') { %>
+        <a href="/logout" class="yellow">Log out</a>
+        <% } else{%>
+            <a href="/login" class="yellow">Admin Log in</a>
+            <%}%>
+    </div>
+</section>
+</header>

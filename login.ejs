@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SKYLINE Education</title>
+
+  <!-- font Awesome CDN link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- JQuery CDN link -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body bgcolor="#E5E8E8">
+ 
+
+<%-include('header')%>
+<br>
+<div class = "maincontainer">
+  <center><h2>Log in</h2></center>
+  <div id="validationMsg">
+    <!-- Data will be displayed here -->
+  </div>
+    <center><label for="id">Username:</label>
+    <input type="text" id="id" name="id" required><br><br>
+    
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required><br><br></center>
+    
+    <center><button id="fetchUser">Log in</button>
+<button onclick="exit()">Exit</button></center>
+  
+  <center><p><!--<a href="<?php echo base_url('index.php/login/redirectToCreateUser'); ?>">Create New User</a>-->
+  
+  <a href="reset_password.html">Reset Password</a></p></center>
+  </div>
+</div>
+  <script>
+    function exit() {
+      // Perform any exit logic here
+      alert("Exiting the page");
+    }
+  </script>
+  <script>
+    // When the "Fetch Data" button is clicked, send the parameters via AJAX
+    $('#fetchUser').click(function() {
+      alert("Entering");
+      var id = $('#id').val(); // Get the user ID value
+      var password = $('#password').val(); // Get the password value
+
+      // Send a GET request with parameters using AJAX
+      $.ajax({
+        url: '/authenticateuser',  // Server route to get data
+        method: 'GET',
+        data: { id: id, password: password },  // Parameters to be sent
+        success: function(data) {
+          // Clear the previous content
+          $('#validationMsg').empty();
+
+          // Display the retrieved data
+          if (data.length == 0) {
+            //data.forEach(user => {
+              $('#validationMsg').html(`
+                  <p><strong>Invalid Username or Password</strong></p>
+              `);
+           // });
+            //alert("Authentication Failed");
+            //$('#validationMsg').html('<p>' + 'Invalid User Name or Password' + '</p>');
+          }
+          else {
+            //alert("Authentication Success");
+            window.location.href = data.redirectTo;
+          }
+        },
+        error: function(err) {
+          console.error('Error fetching data:', err);
+          $('#validationMsg').html('<p>Error occurred while fetching data.</p>');
+        }
+      });
+    });
+  </script>
+          <%- include('footer')%>
+</body>
+</html>
